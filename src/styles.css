@@ -1,0 +1,2719 @@
+:root {
+  --mist: #dbe5e8;
+  --glow: rgba(255, 255, 255, 0.85);
+  --deep: rgba(176, 198, 207, 0.48);
+  --paper: #ffffff;
+  --soft: #e9eff1;
+  --ink: #22302f;
+  --muted: #51656c;
+  --blue: #4f6f7e;
+  --line: rgba(60, 85, 95, 0.13);
+  --focus: #3f5a69;
+  --lift: 0 3px 12px rgba(60, 85, 95, 0.11);
+  --card-shape: 1.12;
+  --glide: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring: cubic-bezier(0.3, 1.18, 0.6, 1);
+  --hover: 0.45s var(--glide);
+  --font: Figtree, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* Pinned, because phones otherwise let the whole page rubber-band and scroll. */
+body {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--mist);
+  color: var(--ink);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+:focus-visible {
+  outline: 2.5px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Page */
+
+.app {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Wide soft circles that fade out at their edges and float slowly around the page. */
+.orbs {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.orbs i {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side, var(--glow), transparent);
+  will-change: transform;
+  animation: float-a 60s ease-in-out infinite alternate;
+}
+
+.orbs i.deep {
+  background: radial-gradient(circle closest-side, var(--deep), transparent);
+}
+
+.orbs i:nth-child(1) {
+  left: -14%;
+  top: 38%;
+  width: 104vmin;
+  height: 104vmin;
+  animation-name: float-a;
+  animation-duration: 62s;
+  animation-delay: -8s;
+}
+
+.orbs i:nth-child(2) {
+  left: 70%;
+  top: -22%;
+  width: 84vmin;
+  height: 84vmin;
+  animation-name: float-b;
+  animation-duration: 74s;
+  animation-delay: -30s;
+}
+
+.orbs i:nth-child(3) {
+  left: 62%;
+  top: 58%;
+  width: 96vmin;
+  height: 96vmin;
+  animation-name: float-c;
+  animation-duration: 68s;
+  animation-delay: -14s;
+}
+
+.orbs i:nth-child(4) {
+  left: 24%;
+  top: -24%;
+  width: 62vmin;
+  height: 62vmin;
+  animation-name: float-c;
+  animation-duration: 56s;
+  animation-delay: -40s;
+}
+
+.orbs i:nth-child(5) {
+  left: -16%;
+  top: -20%;
+  width: 74vmin;
+  height: 74vmin;
+  animation-name: float-b;
+  animation-duration: 80s;
+  animation-delay: -22s;
+}
+
+.orbs i:nth-child(6) {
+  left: 46%;
+  top: 22%;
+  width: 52vmin;
+  height: 52vmin;
+  animation-name: float-a;
+  animation-duration: 50s;
+  animation-delay: -34s;
+}
+
+.orbs i:nth-child(7) {
+  left: 10%;
+  top: 20%;
+  width: 58vmin;
+  height: 58vmin;
+  animation-name: float-c;
+  animation-duration: 86s;
+  animation-delay: -52s;
+}
+
+.orbs i:nth-child(8) {
+  left: 82%;
+  top: 30%;
+  width: 66vmin;
+  height: 66vmin;
+  animation-name: float-a;
+  animation-duration: 70s;
+  animation-delay: -18s;
+}
+
+.orbs i:nth-child(9) {
+  left: 14%;
+  top: 72%;
+  width: 50vmin;
+  height: 50vmin;
+  animation-name: float-b;
+  animation-duration: 58s;
+  animation-delay: -6s;
+}
+
+@keyframes float-a {
+  33% {
+    transform: translate(16vmin, -10vmin) scale(1.08);
+  }
+  66% {
+    transform: translate(-8vmin, 14vmin) scale(0.95);
+  }
+  100% {
+    transform: translate(12vmin, 18vmin) scale(1.04);
+  }
+}
+
+@keyframes float-b {
+  33% {
+    transform: translate(-18vmin, 10vmin) scale(0.94);
+  }
+  66% {
+    transform: translate(10vmin, 18vmin) scale(1.07);
+  }
+  100% {
+    transform: translate(-14vmin, -8vmin) scale(1);
+  }
+}
+
+@keyframes float-c {
+  33% {
+    transform: translate(12vmin, 16vmin) scale(1.06);
+  }
+  66% {
+    transform: translate(-16vmin, -6vmin) scale(1);
+  }
+  100% {
+    transform: translate(8vmin, -16vmin) scale(0.93);
+  }
+}
+
+/* Header */
+
+.header {
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px 12px;
+  padding: calc(16px + env(safe-area-inset-top)) 16px 16px;
+}
+
+.brand {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 42px;
+  padding: 0 14px 0 7px;
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.brand svg {
+  flex: none;
+  width: 28px;
+  height: 28px;
+}
+
+.header-right {
+  justify-self: end;
+  display: flex;
+  gap: 8px;
+}
+
+.segmented {
+  position: relative;
+  display: inline-flex;
+  gap: 2px;
+  height: 42px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+}
+
+.segmented-thumb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+  background: var(--blue);
+  transition:
+    transform 0.34s var(--spring),
+    width 0.3s var(--glide),
+    height 0.3s var(--glide);
+}
+
+.segmented button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 12px;
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+@media (hover: hover) {
+  .segmented button:hover {
+    color: var(--ink);
+  }
+}
+
+.segmented button[aria-pressed='true'] {
+  color: #fff;
+}
+
+.segmented button.icon-only {
+  width: 34px;
+  padding: 0;
+}
+
+.segmented svg {
+  width: 17px;
+  height: 17px;
+}
+
+.badge {
+  animation: badge-pop 0.42s var(--spring);
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.account-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 42px;
+  padding: 0 14px 0 11px;
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.account-button svg {
+  width: 17px;
+  height: 17px;
+}
+
+@keyframes badge-pop {
+  from {
+    transform: scale(0.75);
+  }
+}
+
+.brand,
+.account-button {
+  transition:
+    transform var(--hover),
+    box-shadow var(--hover);
+}
+
+@media (hover: hover) {
+  .brand:hover,
+  .account-button:hover {
+    box-shadow: 0 5px 16px rgba(60, 85, 95, 0.15);
+  }
+}
+
+.brand:active,
+.account-button:active {
+  transform: scale(0.97);
+}
+
+/* Card stack */
+
+.deck-view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 18px;
+}
+
+.deck {
+  --w: min(320px, 74vw, calc((100dvh - 302px) / var(--card-shape)));
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 5vw, 64px);
+}
+
+.stack {
+  position: relative;
+  flex: none;
+  width: var(--w);
+  height: calc(var(--w) * var(--card-shape));
+  /* The card owns every finger movement here, so a slightly diagonal drag still works. */
+  touch-action: none;
+  -webkit-touch-callout: none;
+}
+
+.behind,
+.card {
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--w) * 0.075);
+}
+
+.behind {
+  background: #f5f8f9;
+  box-shadow: 0 2px 8px rgba(60, 85, 95, 0.14);
+}
+
+.behind.far {
+  background: #e9eff1;
+  transform: rotate(-3.2deg) translate(-3px, 5px);
+}
+
+.behind.near {
+  transform: rotate(2.4deg) translate(3px, 3px);
+}
+
+.card {
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: 0 14px 30px rgba(60, 85, 95, 0.2);
+}
+
+.card-face {
+  --pad: calc(var(--w) * 0.08);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  border-radius: 30%;
+  color: var(--icon-ink);
+  background: color-mix(in srgb, var(--icon-ink) 13%, white);
+}
+
+.card-face .card-icon {
+  --icon-ink: var(--band);
+  width: calc(var(--w) * 0.11);
+  height: calc(var(--w) * 0.11);
+  margin: calc(var(--pad) * 0.7) var(--pad) 0;
+}
+
+.card-face .card-icon svg {
+  width: 60%;
+  height: 60%;
+}
+
+.prompt {
+  flex: 1 1 0;
+  min-height: 0;
+  margin: 0;
+  padding: calc(var(--pad) * 0.34) var(--pad) calc(var(--pad) * 0.6);
+  font-size: calc(var(--w) * 0.072);
+  font-weight: 700;
+  line-height: 1.24;
+  letter-spacing: -0.005em;
+}
+
+.art {
+  overflow: hidden;
+}
+
+.card-face .art {
+  /* One size for every card, however long its prompt is. */
+  flex: none;
+  width: 100%;
+  height: calc(var(--w) * 0.4);
+}
+
+.band {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: max(34px, calc(var(--w) * 0.125));
+  padding: 0 var(--pad);
+  background: var(--band);
+  color: #fff;
+  font-size: max(12px, calc(var(--w) * 0.042));
+  line-height: 1;
+  font-weight: 600;
+}
+
+.band span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Letters sit a little above the middle of their line, so icons rise to meet them. */
+.band svg,
+.grid-card-footer .category-icon {
+  width: auto;
+  height: 1.2em;
+  transform: translateY(-0.05em);
+}
+
+.empty-card {
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Card motion */
+
+.card.top-card {
+  cursor: grab;
+  transition: transform 0.36s var(--spring);
+}
+
+.stack {
+  user-select: none;
+}
+
+.stack[data-dragging] .top-card {
+  cursor: grabbing;
+  transform: translateX(var(--drag)) rotate(var(--tilt));
+  transition: none;
+}
+
+@media (hover: hover) {
+  .stack:not([data-dragging]):not(.in-motion):hover .top-card {
+    transform: translateY(-1.5px);
+  }
+}
+
+.behind {
+  transition: transform 0.5s var(--spring);
+}
+
+.stack[data-dragging] .behind.near {
+  transform: rotate(0.6deg) scale(1.01);
+}
+
+.stack.from-behind .behind.near,
+.stack.from-left .behind.near {
+  animation: settle-near 0.5s var(--spring);
+}
+
+.stack.from-behind .behind.far,
+.stack.from-left .behind.far {
+  animation: settle-far 0.5s var(--spring) 0.03s;
+}
+
+.card.leaving {
+  z-index: 2;
+  pointer-events: none;
+  animation: leave-left 0.44s cubic-bezier(0.4, 0, 0.7, 0.6) forwards;
+}
+
+.card.leaving.to-right {
+  animation-name: leave-right;
+}
+
+.card.leaving.to-up {
+  animation: leave-up 0.48s var(--glide) forwards;
+}
+
+.stack.from-behind .top-card {
+  animation: come-forward 0.5s var(--spring);
+}
+
+.stack.from-left .top-card {
+  z-index: 3;
+  animation: come-from-left 0.5s var(--glide);
+}
+
+.stack.from-right .top-card {
+  z-index: 3;
+  animation: come-from-right 0.5s var(--glide);
+}
+
+.stack.from-above .top-card {
+  z-index: 3;
+  animation: come-from-above 0.5s var(--glide);
+}
+
+.card.leaving.to-shuffle {
+  animation: shuffle-out 0.86s var(--glide) forwards;
+}
+
+.stack.shuffling .top-card {
+  animation: shuffle-in 0.86s var(--glide) both;
+}
+
+.stack.shuffling .behind.near {
+  animation: shuffle-near 0.86s var(--glide);
+}
+
+.stack.shuffling .behind.far {
+  animation: shuffle-far 0.86s var(--glide);
+}
+
+@keyframes leave-left {
+  from {
+    transform: translateX(var(--thrown-from, 0)) rotate(var(--thrown-tilt, 0deg));
+  }
+  70% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-115%) rotate(-7deg);
+    opacity: 0;
+  }
+}
+
+@keyframes leave-right {
+  from {
+    transform: translateX(var(--thrown-from, 0)) rotate(var(--thrown-tilt, 0deg));
+  }
+  70% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(115%) rotate(7deg);
+    opacity: 0;
+  }
+}
+
+@keyframes leave-up {
+  30% {
+    transform: translateY(-4%) scale(1.015);
+  }
+  to {
+    transform: translateY(-55%) rotate(2deg) scale(0.94);
+    opacity: 0;
+  }
+}
+
+@keyframes come-forward {
+  from {
+    transform: scale(0.97) translateY(3px);
+  }
+}
+
+@keyframes come-from-left {
+  from {
+    transform: translateX(-115%) rotate(-7deg);
+    opacity: 0;
+  }
+}
+
+@keyframes come-from-right {
+  from {
+    transform: translateX(115%) rotate(7deg);
+    opacity: 0;
+  }
+}
+
+@keyframes come-from-above {
+  from {
+    transform: translateY(-55%) rotate(2deg) scale(0.94);
+    opacity: 0;
+  }
+}
+
+@keyframes settle-near {
+  from {
+    transform: rotate(0deg) scale(0.97);
+  }
+}
+
+@keyframes settle-far {
+  from {
+    transform: rotate(0deg) scale(0.96);
+  }
+}
+
+/* The old top card fans out and slips away while the new one comes up from the pile. */
+@keyframes shuffle-out {
+  45% {
+    transform: translateX(26%) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(6%) rotate(1deg) scale(0.97);
+    opacity: 0;
+  }
+}
+
+@keyframes shuffle-in {
+  0% {
+    transform: translateX(-14%) rotate(-3deg) scale(0.97);
+    opacity: 0;
+  }
+  40% {
+    transform: translateX(-20%) rotate(-4deg) scale(0.98);
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes shuffle-near {
+  40% {
+    transform: translateX(13%) rotate(5deg);
+  }
+  75% {
+    transform: translateX(-4%) rotate(-1deg);
+  }
+}
+
+@keyframes shuffle-far {
+  40% {
+    transform: translateX(-11%) rotate(-6deg);
+  }
+  75% {
+    transform: translateX(3%) rotate(2deg);
+  }
+}
+
+/* Small, slow touches inside the top card's picture */
+
+.card-face .breathing,
+.how-to-slide.is-active .breathing {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: breathe 4.2s ease-in-out infinite;
+}
+
+.card-face .steam,
+.how-to-slide.is-active .steam {
+  animation: steam 3.4s ease-in-out infinite;
+}
+
+.card-face .twinkle,
+.how-to-slide.is-active .twinkle {
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+
+.card-face .twinkle.later,
+.how-to-slide.is-active .twinkle.later {
+  animation-delay: 1.5s;
+}
+
+.card-face .brush,
+.how-to-slide.is-active .brush {
+  transform-box: fill-box;
+  transform-origin: 100% 0;
+  animation: brush 4.6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  50% {
+    transform: scale(1.008, 1.024);
+  }
+}
+
+@keyframes steam {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateY(2px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes twinkle {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes brush {
+  50% {
+    transform: rotate(-3deg);
+  }
+}
+
+/* The page settles in when it opens */
+
+.header {
+  animation: rise 0.5s var(--glide) both;
+}
+
+.deck-view .deck {
+  animation: rise 0.6s var(--glide) 0.06s both;
+}
+
+.deck-view .actions {
+  animation: rise 0.6s var(--glide) 0.14s both;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
+
+/* The cheerful count above the stack */
+
+.stack-status {
+  flex: none;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  margin: 0 0 8px;
+  padding: 5px 16px 5px 6px;
+  border-radius: 16px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+  font-size: 15px;
+  font-weight: 700;
+  animation: rise 0.5s var(--glide) both;
+}
+
+.stack-status:has(b.is-zero) {
+  padding-left: 16px;
+}
+
+.stack-status b.is-zero,
+.status-short {
+  display: none;
+}
+
+.stack-status b {
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 7px;
+  border-radius: 11px;
+  background: var(--tint);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  transition: background 0.36s ease;
+  animation: badge-pop 0.42s var(--spring);
+}
+
+.stack-status i {
+  font-style: normal;
+}
+
+/* Which card is on top */
+
+.deck-area {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Sits right under the card, so the two read as one thing. */
+.deck-area .deck {
+  flex: none;
+}
+
+.card-place {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 22px;
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.place-dots {
+  --dot: 7px;
+  --gap: 7px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.place-dots i {
+  width: var(--dot);
+  height: var(--dot);
+  border-radius: 50%;
+  background: #bccbd0;
+}
+
+/* One marker glides from dot to dot, so the dots themselves never shift. */
+.place-dots b {
+  position: absolute;
+  left: -3px;
+  top: 50%;
+  width: 13px;
+  height: var(--dot);
+  margin-top: calc(var(--dot) / -2);
+  border-radius: 4px;
+  background: var(--tint);
+  transform: translateX(calc(var(--place) * (var(--dot) + var(--gap))));
+  transition:
+    transform 0.46s var(--glide),
+    background 0.36s ease;
+}
+
+/* Controls around the stack */
+
+.arrow,
+.round {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+  transition:
+    transform var(--hover),
+    opacity 0.3s ease,
+    color 0.3s ease,
+    background 0.3s ease;
+}
+
+.arrow {
+  color: var(--tint);
+}
+
+.round {
+  color: var(--muted);
+}
+
+.arrow svg,
+.round svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (hover: hover) {
+  .arrow:not(:disabled):hover,
+  .round:not(:disabled):hover,
+  .primary:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.arrow:not(:disabled):active,
+.round:not(:disabled):active,
+.primary:active {
+  transform: scale(0.97);
+}
+
+.arrow svg,
+.round svg,
+.primary svg {
+  transition: transform var(--hover);
+}
+
+@media (hover: hover) {
+  .arrow-left:not(:disabled):hover svg {
+    transform: translateX(-1px);
+  }
+}
+
+@media (hover: hover) {
+  .arrow-right:not(:disabled):hover svg {
+    transform: translateX(1px);
+  }
+}
+
+@media (hover: hover) {
+  .primary:hover {
+    box-shadow: 0 9px 20px rgba(60, 85, 95, 0.27);
+  }
+}
+
+.arrow:disabled,
+.round:disabled {
+  opacity: 0.45;
+}
+
+.actions {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 46px;
+  padding: 0 22px 0 16px;
+  border-radius: 15px;
+  background: var(--tint);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px rgba(60, 85, 95, 0.24);
+  transition:
+    transform var(--hover),
+    background 0.36s ease,
+    box-shadow var(--hover);
+}
+
+.primary svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Home: choosing what to journal today */
+
+.home-view {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  padding: 0 16px 20px;
+}
+
+.dashboard {
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.dashboard-intro {
+  margin-bottom: 22px;
+  text-align: center;
+  animation: rise 0.5s var(--glide) both;
+}
+
+.dashboard-intro h2 {
+  margin: 0 0 6px;
+  font-size: clamp(24px, 4vw, 34px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.dashboard-intro p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.how-it-works {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 12px;
+  height: 34px;
+  padding: 0 14px 0 9px;
+  border-radius: 11px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    box-shadow var(--hover),
+    transform var(--hover);
+}
+
+@media (hover: hover) {
+  .how-it-works:hover {
+    box-shadow: 0 5px 16px rgba(60, 85, 95, 0.15);
+  }
+}
+
+.how-it-works:active {
+  transform: scale(0.97);
+}
+
+.how-it-works svg {
+  width: 16px;
+  height: 16px;
+}
+
+.dashboard-choices {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  border-radius: 22px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+  text-align: left;
+  animation: rise 0.5s var(--glide) both;
+  transition:
+    transform var(--hover),
+    box-shadow var(--hover);
+}
+
+.choice:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.choice:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.choice:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+@media (hover: hover) {
+  .choice:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(60, 85, 95, 0.16);
+  }
+}
+
+.choice:active {
+  transform: scale(0.985);
+}
+
+.choice .art {
+  flex: none;
+  width: 100%;
+  height: 150px;
+}
+
+.choice-words {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 44px 16px 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.choice-words b {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.choice-words b svg {
+  height: 17px;
+  color: var(--ink-color);
+}
+
+.choice-words small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+  color: var(--ink-color);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.choice-words small svg {
+  width: 13px;
+  height: 13px;
+}
+
+.choice-go {
+  position: absolute;
+  right: 12px;
+  bottom: 16px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  background: var(--ink-color);
+  color: #fff;
+}
+
+.choice-go svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Grid and list views */
+
+.collection-view {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px 16px 28px;
+}
+
+.collection {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.is-list {
+  max-width: 680px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr));
+  gap: 14px;
+}
+
+.grid-card,
+.list-row {
+  animation: rise 0.46s var(--glide) both;
+}
+
+.grid-card:nth-child(2),
+.list-row:nth-child(2) {
+  animation-delay: 0.04s;
+}
+
+.grid-card:nth-child(3),
+.list-row:nth-child(3) {
+  animation-delay: 0.08s;
+}
+
+.grid-card:nth-child(4),
+.list-row:nth-child(4) {
+  animation-delay: 0.12s;
+}
+
+.grid-card:nth-child(n + 5),
+.list-row:nth-child(n + 5) {
+  animation-delay: 0.16s;
+}
+
+.grid-card {
+  transition:
+    transform var(--hover),
+    box-shadow var(--hover);
+}
+
+@media (hover: hover) {
+  .grid-card:hover {
+    transform: translateY(-1.5px);
+    box-shadow: 0 7px 20px rgba(60, 85, 95, 0.14);
+  }
+}
+
+.grid-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+}
+
+.grid-card .card-icon {
+  --icon-ink: var(--ink-color);
+  width: 30px;
+  height: 30px;
+  margin: 14px 16px 0;
+}
+
+.grid-card .card-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.grid-card p {
+  flex: 1;
+  margin: 0;
+  padding: 9px 16px 12px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.28;
+}
+
+.grid-card .art {
+  flex: none;
+  width: 100%;
+  height: 112px;
+}
+
+.grid-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 8px 8px 14px;
+  background: var(--ink-color);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.category-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.category-icon {
+  flex: none;
+  width: auto;
+  height: 16px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pill {
+  transition:
+    background 0.3s ease,
+    transform var(--hover);
+}
+
+@media (hover: hover) {
+  .pill:hover {
+    background: rgba(255, 255, 255, 0.28);
+  }
+}
+
+.pill:active {
+  transform: scale(0.96);
+}
+
+.pill svg {
+  width: 13px;
+  height: 13px;
+}
+
+.list {
+  overflow: hidden;
+  padding: 4px 16px;
+  border-radius: 20px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-top: 1px solid var(--line);
+}
+
+.list-row:first-child {
+  border-top: 0;
+}
+
+.check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--ink-color);
+  border-radius: 50%;
+  color: transparent;
+}
+
+.check svg {
+  width: 13px;
+  height: 13px;
+}
+
+.check {
+  transition:
+    transform var(--hover),
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+@media (hover: hover) {
+  .check:hover {
+    color: var(--ink-color);
+    transform: scale(1.03);
+  }
+}
+
+.check:active {
+  transform: scale(0.94);
+}
+
+.is-done .check {
+  background: var(--ink-color);
+  color: #fff;
+}
+
+.list-row-text {
+  min-width: 0;
+  font-size: 14.5px;
+  line-height: 1.3;
+}
+
+.list-row-text b {
+  display: block;
+  font-weight: 600;
+}
+
+.list-row-text .category-name {
+  margin-top: 4px;
+  color: var(--ink-color);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.link {
+  padding: 0;
+  text-decoration: underline transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.3s ease;
+  font-weight: inherit;
+  text-align: left;
+}
+
+@media (hover: hover) {
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+.day-heading {
+  margin: 20px 2px 10px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.day-heading:first-child {
+  margin-top: 4px;
+}
+
+.empty {
+  max-width: 420px;
+  margin: 12vh auto 0;
+  padding: 26px;
+  border-radius: 20px;
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* How-to slides */
+
+.help-button {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: var(--lift);
+  transition: box-shadow var(--hover);
+}
+
+@media (hover: hover) {
+  .help-button:hover {
+    box-shadow: 0 5px 16px rgba(60, 85, 95, 0.15);
+  }
+}
+
+.help-button svg {
+  width: 19px;
+  height: 19px;
+}
+
+.how-to {
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100dvh - 24px);
+  padding: 0 0 20px;
+  overflow: hidden auto;
+  border: 0;
+  border-radius: 28px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 24px 60px rgba(40, 60, 70, 0.28);
+}
+
+.how-to[open] {
+  animation: dialog-in 0.36s var(--spring);
+}
+
+.how-to::backdrop {
+  background: rgba(40, 60, 70, 0.4);
+  animation: fade-in 0.28s ease;
+}
+
+.how-to-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--lift);
+  transition: box-shadow var(--hover);
+}
+
+@media (hover: hover) {
+  .how-to-close:hover {
+    box-shadow: 0 5px 16px rgba(60, 85, 95, 0.2);
+  }
+}
+
+.how-to-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* All the steps sit side by side and glide past, so the window never changes height. */
+.how-to-window {
+  overflow: hidden;
+}
+
+.how-to-track {
+  display: flex;
+  transform: translateX(calc(var(--slide) * -100%));
+  transition: transform 0.56s var(--glide);
+}
+
+.how-to-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  opacity: 0.35;
+  transition: opacity 0.42s ease;
+}
+
+.how-to-slide.is-active {
+  opacity: 1;
+}
+
+.how-to-art {
+  overflow: hidden;
+}
+
+.how-to-art .art {
+  transform: scale(1.07);
+  transition: transform 0.8s var(--glide);
+}
+
+.how-to-slide.is-active .art {
+  transform: none;
+}
+
+/* The words follow the picture in, one after another. */
+.how-to-slide.is-active h2 {
+  animation: words-in 0.5s var(--glide) 0.1s both;
+}
+
+.how-to-slide.is-active p {
+  animation: words-in 0.5s var(--glide) 0.18s both;
+}
+
+.how-to-slide.is-active .how-to-note {
+  animation-delay: 0.28s;
+}
+
+@keyframes words-in {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
+
+/* The four stacks appear one by one. */
+.how-to-slide.is-active .is-grid .art {
+  animation: art-in 0.56s var(--glide) both;
+}
+
+.how-to-slide.is-active .is-grid .art:nth-child(2) {
+  animation-delay: 0.07s;
+}
+
+.how-to-slide.is-active .is-grid .art:nth-child(3) {
+  animation-delay: 0.14s;
+}
+
+.how-to-slide.is-active .is-grid .art:nth-child(4) {
+  animation-delay: 0.21s;
+}
+
+@keyframes art-in {
+  from {
+    transform: scale(0.94);
+    opacity: 0;
+  }
+}
+
+/* Each picture acts out its step. */
+.anim-back-card,
+.anim-front-card,
+.anim-arrow-left,
+.anim-arrow-right,
+.anim-pen,
+.anim-pop,
+.anim-sun,
+.anim-deal {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.is-active .anim-front-card {
+  animation: card-flick 3.6s ease-in-out 0.45s infinite;
+}
+
+.is-active .anim-back-card {
+  animation: card-settle 3.6s ease-in-out 0.45s infinite;
+}
+
+.is-active .anim-arrow-right {
+  animation: nudge-right 3.6s ease-in-out 0.45s infinite;
+}
+
+.is-active .anim-arrow-left {
+  animation: nudge-left 3.6s ease-in-out 0.45s infinite;
+}
+
+@keyframes card-flick {
+  0%,
+  55%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: translateX(12px) rotate(4deg);
+  }
+}
+
+@keyframes card-settle {
+  0%,
+  55%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: translateX(-5px) rotate(-2deg);
+  }
+}
+
+@keyframes nudge-right {
+  0%,
+  55%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes nudge-left {
+  0%,
+  55%,
+  100% {
+    transform: none;
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+}
+
+.anim-line,
+.anim-check {
+  stroke-dasharray: 1;
+}
+
+.is-active .anim-line {
+  animation: draw-line 0.5s ease-out 0.25s both;
+}
+
+.is-active .anim-line.second {
+  animation-delay: 0.65s;
+}
+
+.is-active .anim-line.third {
+  animation-delay: 1.05s;
+}
+
+.is-active .anim-line.fourth {
+  animation-delay: 1.45s;
+}
+
+.is-active .anim-check {
+  animation: draw-line 0.42s ease-out 0.5s both;
+}
+
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.is-active .anim-pen {
+  animation: pen-write 1.9s ease-in-out 0.2s;
+}
+
+@keyframes pen-write {
+  25% {
+    transform: translate(-4px, 2px) rotate(-3deg);
+  }
+  50% {
+    transform: translate(3px, -1px) rotate(2deg);
+  }
+  75% {
+    transform: translate(-3px, 2px) rotate(-2deg);
+  }
+}
+
+.is-active .anim-pop {
+  animation: check-pop 0.55s var(--spring) 0.2s both;
+}
+
+@keyframes check-pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
+.is-active .anim-sun {
+  animation: sun-rise 1.3s var(--glide) 0.1s both;
+}
+
+@keyframes sun-rise {
+  from {
+    transform: translateY(46px);
+  }
+}
+
+.is-active .anim-deal {
+  animation: deal-in 0.56s var(--spring) both;
+}
+
+.is-active .anim-deal:nth-of-type(1) {
+  animation-delay: 0.25s;
+}
+
+.is-active .anim-deal:nth-of-type(2) {
+  animation-delay: 0.36s;
+}
+
+.is-active .anim-deal:nth-of-type(3) {
+  animation-delay: 0.47s;
+}
+
+.is-active .anim-deal:nth-of-type(4) {
+  animation-delay: 0.58s;
+}
+
+@keyframes deal-in {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+
+.how-to-art {
+  display: grid;
+  height: clamp(110px, 30dvh, 220px);
+}
+
+.how-to-art .art {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.how-to-art.is-grid {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.how-to-words {
+  padding: 18px 24px 0;
+}
+
+.how-to-words h2 {
+  margin: 0 0 6px;
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.how-to-words p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.how-to-words .how-to-note {
+  margin-top: 10px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: var(--soft);
+  color: var(--ink);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.how-to-dots {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  margin: 8px 0 12px;
+}
+
+.how-to-dots button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+}
+
+.how-to-dots button::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c6d3d7;
+  transition:
+    width 0.3s var(--glide),
+    background 0.3s ease;
+}
+
+.how-to-dots button[aria-current]::after {
+  width: 20px;
+  border-radius: 4px;
+  background: var(--blue);
+}
+
+.how-to-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 24px;
+}
+
+.how-to-buttons button {
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 14px;
+  font-size: 14.5px;
+  font-weight: 600;
+  transition:
+    transform var(--hover),
+    box-shadow var(--hover);
+}
+
+@media (hover: hover) {
+  .how-to-buttons button:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (hover: hover) {
+  .how-to-next:hover {
+    box-shadow: 0 8px 18px rgba(60, 85, 95, 0.26);
+  }
+}
+
+.how-to-buttons button:active {
+  transform: scale(0.97);
+}
+
+.how-to-back {
+  background: var(--soft);
+}
+
+.how-to-next {
+  background: var(--blue);
+  color: #fff;
+}
+
+/* Sign-in */
+
+.account-dialog {
+  width: min(400px, calc(100vw - 32px));
+  padding: 24px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 24px 60px rgba(40, 60, 70, 0.28);
+}
+
+.account-dialog[open] {
+  animation: dialog-in 0.36s var(--spring);
+}
+
+.account-dialog::backdrop {
+  background: rgba(40, 60, 70, 0.4);
+  animation: fade-in 0.28s ease;
+}
+
+@keyframes dialog-in {
+  from {
+    transform: translateY(10px) scale(0.98);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.account-dialog h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.account-dialog p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.account-dialog p strong {
+  color: var(--ink);
+}
+
+.account-dialog form label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.account-dialog form input:not([role='switch']) {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--soft);
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+}
+
+.account-dialog form input + label {
+  margin-top: 12px;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 12px;
+}
+
+.label-row label {
+  margin-bottom: 6px;
+}
+
+.text-link {
+  padding: 0;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .text-link:hover {
+    color: var(--ink);
+  }
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 62px !important;
+}
+
+.password-field button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.field-hint {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.account-switch {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 14px;
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.account-row .account-secondary {
+  margin-right: auto;
+}
+
+.account-error {
+  margin: 10px 0 0 !important;
+  color: #a03d2c !important;
+}
+
+.account-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.account-row button {
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 13px;
+  background: var(--soft);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.account-row .account-primary {
+  background: var(--blue);
+  color: #fff;
+}
+
+.account-row button:disabled {
+  opacity: 0.6;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+}
+
+.setting-row span {
+  display: block;
+}
+
+.setting-row b {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.setting-row small {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.setting-row input {
+  flex: none;
+  position: relative;
+  width: 44px;
+  height: 26px;
+  margin: 0;
+  border-radius: 13px;
+  background: #c6d3d7;
+  appearance: none;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.setting-row input::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.32s var(--glide);
+}
+
+.setting-row input:checked {
+  background: var(--blue);
+}
+
+.setting-row input:checked::after {
+  transform: translateX(18px);
+}
+
+/* Gliding between views, and when cards leave a grid or list */
+
+.header {
+  view-transition-name: header;
+}
+
+::view-transition-group(*) {
+  animation-duration: 0.36s;
+  animation-timing-function: var(--glide);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.26s;
+}
+
+.credit {
+  flex: none;
+  align-self: center;
+  padding: 0 8px 8px;
+  color: var(--muted);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.credit strong {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+/* Smaller screens */
+
+@media (max-width: 900px) {
+  .header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .filters {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .filters .segmented {
+    display: flex;
+    justify-content: space-between;
+    min-width: max-content;
+  }
+
+  .deck {
+    --w: min(320px, 68vw, calc((100dvh - 352px) / var(--card-shape)));
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: calc(12px + env(safe-area-inset-top)) 12px 12px;
+  }
+
+  .segmented button {
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  .segmented button.icon-only {
+    width: 30px;
+  }
+
+  .account-button {
+    width: 42px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .account-button span {
+    display: none;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .grid-card .card-icon {
+    width: 26px;
+    height: 26px;
+    margin: 11px 12px 0;
+  }
+
+  .grid-card .card-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .grid-card p {
+    padding: 8px 12px 10px;
+    font-size: 13.5px;
+  }
+
+  .grid-card .art {
+    height: 96px;
+  }
+
+  /* There is only room for the icon beside the button. */
+  .grid-card .category-name {
+    font-size: 0;
+  }
+
+  .grid-card-footer {
+    padding: 7px 7px 7px 11px;
+  }
+
+  /* The arrows sit over the sides of the card, leaving it room to be read. */
+  .deck {
+    --w: min(320px, 80vw, calc((100dvh - 340px) / var(--card-shape)));
+    position: relative;
+  }
+
+  .arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    margin-top: -21px;
+  }
+
+  .arrow:first-child {
+    left: -8px;
+  }
+
+  .arrow:last-child {
+    right: -8px;
+  }
+
+  .deck-view {
+    padding: 0 12px 16px;
+  }
+}
+
+/* Short windows, like a sideways phone: the card turns wide, with its picture beside the words. */
+@media (max-width: 900px) {
+  .dashboard-choices {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .home-view {
+    padding: 0 12px 14px;
+  }
+
+  .dashboard-intro {
+    margin-bottom: 14px;
+  }
+
+  .dashboard-intro p {
+    font-size: 14px;
+  }
+
+  .dashboard-choices {
+    gap: 10px;
+  }
+
+  .choice {
+    border-radius: 18px;
+  }
+
+  .choice .art {
+    height: 112px;
+  }
+
+  .choice-words {
+    padding: 11px 36px 12px 12px;
+    font-size: 12.5px;
+  }
+
+  .choice-words b {
+    font-size: 15px;
+  }
+
+  .choice-go {
+    right: 8px;
+    bottom: 10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 8px;
+  }
+}
+
+/* Small phones: everything still fits on one screen. */
+@media (max-width: 640px) and (max-height: 700px) {
+  .home-view {
+    padding-bottom: 6px;
+  }
+
+  .dashboard-intro {
+    margin-bottom: 8px;
+  }
+
+  .dashboard-intro h2 {
+    margin-bottom: 3px;
+    font-size: 20px;
+  }
+
+  .dashboard-intro p {
+    font-size: 12px;
+  }
+
+  .how-it-works {
+    margin-top: 5px;
+    height: 26px;
+    font-size: 12px;
+  }
+
+  .dashboard-choices {
+    gap: 8px;
+  }
+
+  .choice .art {
+    height: 68px;
+  }
+
+  .choice-words {
+    gap: 1px;
+    padding: 6px 30px 7px 9px;
+    font-size: 11.5px;
+    line-height: 1.2;
+  }
+
+  .choice-words b {
+    font-size: 13.5px;
+  }
+
+  .choice-go {
+    right: 6px;
+    bottom: 7px;
+  }
+}
+
+@media (max-width: 420px) {
+  .header-right {
+    gap: 6px;
+  }
+
+  .help-button,
+  .account-button {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+  }
+
+  .segmented {
+    height: 38px;
+  }
+
+  .header-right .segmented button.icon-only {
+    width: 26px;
+  }
+
+  .brand {
+    height: 38px;
+    gap: 7px;
+    padding: 0 10px 0 5px;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+
+  .brand svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .stack-status {
+    font-size: 14px;
+  }
+}
+
+/* The smallest phones: the logo tile alone leaves room for everything else. */
+@media (max-width: 350px) {
+  .brand {
+    padding: 0 6px;
+  }
+
+  .brand span,
+  .filters .badge {
+    display: none;
+  }
+
+  .filters .segmented button {
+    padding: 0 6px;
+    font-size: 11.5px;
+  }
+}
+
+@media (max-height: 520px) {
+  .dashboard-intro {
+    margin-bottom: 8px;
+  }
+
+  .dashboard-intro h2 {
+    font-size: 20px;
+  }
+
+  .dashboard-intro p {
+    font-size: 12.5px;
+  }
+
+  .how-it-works {
+    margin-top: 5px;
+    height: 26px;
+    font-size: 12px;
+  }
+
+  .dashboard-choices {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .choice .art {
+    height: 62px;
+  }
+
+  .choice-words {
+    padding: 7px 8px 9px;
+    font-size: 11.5px;
+  }
+
+  .choice-words b {
+    font-size: 13px;
+  }
+
+  .choice-go {
+    display: none;
+  }
+
+  .credit {
+    position: absolute;
+    right: 8px;
+    bottom: 0;
+    padding-bottom: 2px;
+    font-size: 11px;
+  }
+
+  /* The place in the stack tucks into the opposite corner. */
+  .card-place {
+    position: absolute;
+    right: 14px;
+    bottom: 18px;
+    z-index: 2;
+    margin: 0;
+  }
+
+  .place-dots {
+    display: none;
+  }
+
+  /* The count moves down beside the buttons, in its short form. */
+  .deck-view {
+    position: relative;
+  }
+
+  .stack-status {
+    position: absolute;
+    left: 12px;
+    bottom: 10px;
+    z-index: 2;
+    margin: 0;
+    min-height: 38px;
+    padding: 4px 12px 4px 4px;
+    font-size: 14px;
+  }
+
+  .stack-status b {
+    min-width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .status-long {
+    display: none;
+  }
+
+  .status-short {
+    display: inline;
+    font-size: 14px;
+  }
+
+  .stack-status:has(b.is-zero) {
+    padding-left: 4px;
+  }
+
+  .stack-status b.is-zero {
+    display: grid;
+  }
+
+  /* The picture sits beside the words, so nothing is lost on a short screen. */
+  .how-to {
+    width: min(620px, calc(100vw - 32px));
+    padding-bottom: 14px;
+  }
+
+  .how-to-slide {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    min-height: 170px;
+  }
+
+  .how-to-art {
+    height: 100%;
+    min-height: 170px;
+  }
+
+  .how-to-words {
+    min-height: 0;
+    padding: 16px 20px 0;
+  }
+
+  .how-to-words h2 {
+    font-size: 20px;
+  }
+
+  .how-to-words p {
+    font-size: 14px;
+  }
+
+  .how-to-words .how-to-note {
+    margin-top: 8px;
+    padding: 7px 10px;
+    font-size: 12.5px;
+  }
+
+  .how-to-dots {
+    margin: 8px 0;
+  }
+
+  .how-to-buttons button {
+    height: 38px;
+  }
+
+  .deck {
+    --w: min(460px, 60vw);
+  }
+
+  .stack {
+    height: calc(100dvh - 164px);
+  }
+
+  .card-face {
+    --pad: 16px;
+    display: grid;
+    position: relative;
+    grid-template-columns: 1fr 40%;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .card-face .card-icon {
+    grid-column: 1;
+    width: 26px;
+    height: 26px;
+    margin: 10px 16px 0;
+  }
+
+  .prompt {
+    grid-column: 1;
+    padding: 6px 16px 8px;
+    overflow: hidden;
+    font-size: 15px;
+  }
+
+  .card-face .art {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 34px;
+    width: 40%;
+    height: calc(100% - 34px);
+  }
+
+  .band {
+    grid-column: 1 / -1;
+    height: 34px;
+    padding: 0 16px;
+  }
+
+  .filters {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .header {
+    grid-template-columns: auto 1fr auto;
+    padding: 8px 12px;
+  }
+
+  .deck-view {
+    padding-bottom: 8px;
+  }
+}
+
+/* A short, narrow window: the logo tile alone leaves room for every filter. */
+@media (max-height: 520px) and (max-width: 720px) {
+  .header,
+  .header-right {
+    gap: 6px;
+  }
+
+  .header {
+    padding-inline: 8px;
+  }
+
+  .help-button,
+  .account-button {
+    width: 38px;
+  }
+
+  .header-right .segmented button.icon-only {
+    width: 26px;
+  }
+
+  .filters .segmented button {
+    padding: 0 6px;
+    font-size: 11.5px;
+  }
+
+  .brand {
+    padding: 0 7px;
+  }
+
+  .brand span,
+  .badge {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after,
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .card.leaving {
+    display: none;
+  }
+}
